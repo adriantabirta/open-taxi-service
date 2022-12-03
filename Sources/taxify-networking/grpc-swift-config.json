@@ -1,0 +1,13 @@
+{
+    "invocations": [
+        {
+            "protoFiles": [
+                "ProtoFiles/rideService.proto",
+                "ProtoFiles/authenticationService.proto"
+            ],
+            "visibility": "public",
+            "client": true,
+            "keepMethodCasing": false
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "invocations": [
+        {
+            "protoFiles": [
+                "ProtoFiles/rideService.proto",
+                "ProtoFiles/authenticationService.proto"
+            ],
+            "visibility": "public",
+            "fileNaming":"fullPath"
+        }
+    ]
+}

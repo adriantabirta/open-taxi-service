@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/Empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service AuthenticationService {
+    
+    rpc sendAuthenticationCode (google.protobuf.StringValue) returns (google.protobuf.Empty) {}
+    
+    rpc authenticate (AuthenticationRequest) returns (google.protobuf.StringValue) {}    
+}
+
+message AuthenticationRequest {
+   
+    string phoneNumber = 1;
+    
+    int32 smsCode = 2;
+}

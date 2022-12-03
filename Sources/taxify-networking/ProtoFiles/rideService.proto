@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+import "google/protobuf/Empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service RideService {
+    
+    rpc placeOrder(RideRequest) returns (stream RideResponse) {}
+    
+    rpc sendChatMessage (google.protobuf.StringValue) returns (google.protobuf.Empty) {}
+    
+    rpc cancelRide (google.protobuf.StringValue) returns (google.protobuf.Empty) {}
+}
+
+message RideRequest {
+    repeated Location locations = 1;
+}
+
+message RideResponse {
+    
+    enum RideStatus {
+        SEARCHING_TAXI = 0;
+        DRIVING_TO_CLIENT = 1;
+        ARRIVED_TO_CLIENT_ADDRESS = 2;
+        WAITING_FOR_CLIENT = 3;
+        DRIVING_TO_DESTINATION = 4;
+        ARRIVED_AT_DESTINATION = 5;
+    }
+    
+    int32 id = 1;
+    RideStatus rideStatus = 2;
+    optional Car car = 3;
+    optional Driver driver = 4;
+    optional string estimatedPrice = 5;
+}
+
+message Car {
+    int32 id = 1;
+    int32 plateNumber = 2;
+    string color = 3;
+    string model = 4;
+}
+
+message Driver {
+    int32 id = 1;
+    string name = 2;
+    string phoneNumber = 3;
+}
+
+message Location {
+    
+    optional string name = 1;
+    
+    optional double latitude = 2;
+    
+    optional double longitude = 3;
+}
+
+message CancelRideRequest {
+    
+    enum CancelRideReason {
+        BAD_DRIVER = 0;
+        ACCIDENT = 1;
+        ANOTHER = 2;
+    }
+    
+    CancelRideReason reason = 1;
+    optional string comment = 2;
+}
