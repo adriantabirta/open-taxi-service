@@ -8,7 +8,7 @@
 import Combine
 import CombineGRPC
 
-protocol RideRemoteDataSource {
+public protocol RideRemoteDataSource {
     
     func placeOrder(_ rideRequest: RideRequest) -> AnyPublisher<RideResponse, RPCError>
     
