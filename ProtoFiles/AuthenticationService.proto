@@ -5,9 +5,9 @@ import "google/protobuf/wrappers.proto";
 
 service AuthenticationService {
     
-    rpc sendAuthenticationCode (google.protobuf.StringValue) returns (google.protobuf.Empty) {}
+    rpc sendAuthenticationCode (google.protobuf.StringValue) returns (google.protobuf.Empty);
     
-    rpc authenticate (AuthenticationRequest) returns (google.protobuf.StringValue) {}    
+    rpc authenticate (AuthenticationRequest) returns (google.protobuf.StringValue);
 }
 
 message AuthenticationRequest {

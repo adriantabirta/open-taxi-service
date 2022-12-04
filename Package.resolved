@@ -10,24 +10,6 @@
       }
     },
     {
-      "identity" : "grpc-swift-combine",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vyshane/grpc-swift-combine.git",
-      "state" : {
-        "revision" : "ecde1d57f96d90138777730d3d0d277a6cecc779",
-        "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "resolver",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hmlongco/Resolver.git",
-      "state" : {
-        "revision" : "97de0b0320036607564af4a60025b48f8d041221",
-        "version" : "1.5.0"
-      }
-    },
-    {
       "identity" : "swift-atomics",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-atomics.git",

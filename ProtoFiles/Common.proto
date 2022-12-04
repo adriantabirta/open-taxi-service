@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message Location {
+    
+    optional string name = 1;
+    
+    optional double latitude = 2;
+    
+    optional double longitude = 3;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "RideModels.proto";
+import "google/protobuf/Empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service RideService {
+    
+    rpc placeOrder(RideRequest) returns (stream RideResponse);
+    
+    rpc sendChatMessage (google.protobuf.StringValue) returns (google.protobuf.Empty);
+    
+    rpc cancelRide (CancelRideRequest) returns (google.protobuf.Empty);
+}
+
