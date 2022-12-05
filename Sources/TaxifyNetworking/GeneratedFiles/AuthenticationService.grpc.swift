@@ -20,11 +20,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
-@_exported import GRPC
-@_exported import NIO
-@_exported import NIOConcurrencyHelpers
-@_exported import SwiftProtobuf
+import GRPC
+import NIO
+import NIOConcurrencyHelpers
+import SwiftProtobuf
 
 
 /// Usage: instantiate `AuthenticationServiceClient`, then call methods of this protocol to make API calls.
@@ -273,6 +272,80 @@ public enum AuthenticationServiceClientMetadata {
       path: "/AuthenticationService/authenticate",
       type: GRPCCallType.unary
     )
+  }
+}
+
+#if compiler(>=5.6)
+@available(swift, deprecated: 5.6)
+extension AuthenticationServiceTestClient: @unchecked Sendable {}
+#endif // compiler(>=5.6)
+
+@available(swift, deprecated: 5.6, message: "Test clients are not Sendable but the 'GRPCClient' API requires clients to be Sendable. Using a localhost client and server is the recommended alternative.")
+public final class AuthenticationServiceTestClient: AuthenticationServiceClientProtocol {
+  private let fakeChannel: FakeChannel
+  public var defaultCallOptions: CallOptions
+  public var interceptors: AuthenticationServiceClientInterceptorFactoryProtocol?
+
+  public var channel: GRPCChannel {
+    return self.fakeChannel
+  }
+
+  public init(
+    fakeChannel: FakeChannel = FakeChannel(),
+    defaultCallOptions callOptions: CallOptions = CallOptions(),
+    interceptors: AuthenticationServiceClientInterceptorFactoryProtocol? = nil
+  ) {
+    self.fakeChannel = fakeChannel
+    self.defaultCallOptions = callOptions
+    self.interceptors = interceptors
+  }
+
+  /// Make a unary response for the sendAuthenticationCode RPC. This must be called
+  /// before calling 'sendAuthenticationCode'. See also 'FakeUnaryResponse'.
+  ///
+  /// - Parameter requestHandler: a handler for request parts sent by the RPC.
+  public func makesendAuthenticationCodeResponseStream(
+    _ requestHandler: @escaping (FakeRequestPart<SwiftProtobuf.Google_Protobuf_StringValue>) -> () = { _ in }
+  ) -> FakeUnaryResponse<SwiftProtobuf.Google_Protobuf_StringValue, Google_Protobuf_Empty> {
+    return self.fakeChannel.makeFakeUnaryResponse(path: AuthenticationServiceClientMetadata.Methods.sendAuthenticationCode.path, requestHandler: requestHandler)
+  }
+
+  public func enqueuesendAuthenticationCodeResponse(
+    _ response: Google_Protobuf_Empty,
+    _ requestHandler: @escaping (FakeRequestPart<SwiftProtobuf.Google_Protobuf_StringValue>) -> () = { _ in }
+  ) {
+    let stream = self.makesendAuthenticationCodeResponseStream(requestHandler)
+    // This is the only operation on the stream; try! is fine.
+    try! stream.sendMessage(response)
+  }
+
+  /// Returns true if there are response streams enqueued for 'sendAuthenticationCode'
+  public var hassendAuthenticationCodeResponsesRemaining: Bool {
+    return self.fakeChannel.hasFakeResponseEnqueued(forPath: AuthenticationServiceClientMetadata.Methods.sendAuthenticationCode.path)
+  }
+
+  /// Make a unary response for the authenticate RPC. This must be called
+  /// before calling 'authenticate'. See also 'FakeUnaryResponse'.
+  ///
+  /// - Parameter requestHandler: a handler for request parts sent by the RPC.
+  public func makeauthenticateResponseStream(
+    _ requestHandler: @escaping (FakeRequestPart<AuthenticationRequest>) -> () = { _ in }
+  ) -> FakeUnaryResponse<AuthenticationRequest, SwiftProtobuf.Google_Protobuf_StringValue> {
+    return self.fakeChannel.makeFakeUnaryResponse(path: AuthenticationServiceClientMetadata.Methods.authenticate.path, requestHandler: requestHandler)
+  }
+
+  public func enqueueauthenticateResponse(
+    _ response: SwiftProtobuf.Google_Protobuf_StringValue,
+    _ requestHandler: @escaping (FakeRequestPart<AuthenticationRequest>) -> () = { _ in }
+  ) {
+    let stream = self.makeauthenticateResponseStream(requestHandler)
+    // This is the only operation on the stream; try! is fine.
+    try! stream.sendMessage(response)
+  }
+
+  /// Returns true if there are response streams enqueued for 'authenticate'
+  public var hasauthenticateResponsesRemaining: Bool {
+    return self.fakeChannel.hasFakeResponseEnqueued(forPath: AuthenticationServiceClientMetadata.Methods.authenticate.path)
   }
 }
 

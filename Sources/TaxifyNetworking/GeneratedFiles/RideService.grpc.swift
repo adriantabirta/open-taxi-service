@@ -20,10 +20,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-@_exported import GRPC
-@_exported import NIO
-@_exported import NIOConcurrencyHelpers
-@_exported import SwiftProtobuf
+import GRPC
+import NIO
+import NIOConcurrencyHelpers
+import SwiftProtobuf
+import SwiftProtobuf
 
 
 /// Usage: instantiate `RideServiceClient`, then call methods of this protocol to make API calls.
@@ -338,6 +339,105 @@ public enum RideServiceClientMetadata {
       path: "/RideService/cancelRide",
       type: GRPCCallType.unary
     )
+  }
+}
+
+#if compiler(>=5.6)
+@available(swift, deprecated: 5.6)
+extension RideServiceTestClient: @unchecked Sendable {}
+#endif // compiler(>=5.6)
+
+@available(swift, deprecated: 5.6, message: "Test clients are not Sendable but the 'GRPCClient' API requires clients to be Sendable. Using a localhost client and server is the recommended alternative.")
+public final class RideServiceTestClient: RideServiceClientProtocol {
+  private let fakeChannel: FakeChannel
+  public var defaultCallOptions: CallOptions
+  public var interceptors: RideServiceClientInterceptorFactoryProtocol?
+
+  public var channel: GRPCChannel {
+    return self.fakeChannel
+  }
+
+  public init(
+    fakeChannel: FakeChannel = FakeChannel(),
+    defaultCallOptions callOptions: CallOptions = CallOptions(),
+    interceptors: RideServiceClientInterceptorFactoryProtocol? = nil
+  ) {
+    self.fakeChannel = fakeChannel
+    self.defaultCallOptions = callOptions
+    self.interceptors = interceptors
+  }
+
+  /// Make a streaming response for the placeOrder RPC. This must be called
+  /// before calling 'placeOrder'. See also 'FakeStreamingResponse'.
+  ///
+  /// - Parameter requestHandler: a handler for request parts sent by the RPC.
+  public func makeplaceOrderResponseStream(
+    _ requestHandler: @escaping (FakeRequestPart<RideRequest>) -> () = { _ in }
+  ) -> FakeStreamingResponse<RideRequest, RideResponse> {
+    return self.fakeChannel.makeFakeStreamingResponse(path: RideServiceClientMetadata.Methods.placeOrder.path, requestHandler: requestHandler)
+  }
+
+  public func enqueueplaceOrderResponses(
+    _ responses: [RideResponse],
+    _ requestHandler: @escaping (FakeRequestPart<RideRequest>) -> () = { _ in }
+  ) {
+    let stream = self.makeplaceOrderResponseStream(requestHandler)
+    // These are the only operation on the stream; try! is fine.
+    responses.forEach { try! stream.sendMessage($0) }
+    try! stream.sendEnd()
+  }
+
+  /// Returns true if there are response streams enqueued for 'placeOrder'
+  public var hasplaceOrderResponsesRemaining: Bool {
+    return self.fakeChannel.hasFakeResponseEnqueued(forPath: RideServiceClientMetadata.Methods.placeOrder.path)
+  }
+
+  /// Make a unary response for the sendChatMessage RPC. This must be called
+  /// before calling 'sendChatMessage'. See also 'FakeUnaryResponse'.
+  ///
+  /// - Parameter requestHandler: a handler for request parts sent by the RPC.
+  public func makesendChatMessageResponseStream(
+    _ requestHandler: @escaping (FakeRequestPart<SwiftProtobuf.Google_Protobuf_StringValue>) -> () = { _ in }
+  ) -> FakeUnaryResponse<SwiftProtobuf.Google_Protobuf_StringValue, Google_Protobuf_Empty> {
+    return self.fakeChannel.makeFakeUnaryResponse(path: RideServiceClientMetadata.Methods.sendChatMessage.path, requestHandler: requestHandler)
+  }
+
+  public func enqueuesendChatMessageResponse(
+    _ response: Google_Protobuf_Empty,
+    _ requestHandler: @escaping (FakeRequestPart<SwiftProtobuf.Google_Protobuf_StringValue>) -> () = { _ in }
+  ) {
+    let stream = self.makesendChatMessageResponseStream(requestHandler)
+    // This is the only operation on the stream; try! is fine.
+    try! stream.sendMessage(response)
+  }
+
+  /// Returns true if there are response streams enqueued for 'sendChatMessage'
+  public var hassendChatMessageResponsesRemaining: Bool {
+    return self.fakeChannel.hasFakeResponseEnqueued(forPath: RideServiceClientMetadata.Methods.sendChatMessage.path)
+  }
+
+  /// Make a unary response for the cancelRide RPC. This must be called
+  /// before calling 'cancelRide'. See also 'FakeUnaryResponse'.
+  ///
+  /// - Parameter requestHandler: a handler for request parts sent by the RPC.
+  public func makecancelRideResponseStream(
+    _ requestHandler: @escaping (FakeRequestPart<CancelRideRequest>) -> () = { _ in }
+  ) -> FakeUnaryResponse<CancelRideRequest, Google_Protobuf_Empty> {
+    return self.fakeChannel.makeFakeUnaryResponse(path: RideServiceClientMetadata.Methods.cancelRide.path, requestHandler: requestHandler)
+  }
+
+  public func enqueuecancelRideResponse(
+    _ response: Google_Protobuf_Empty,
+    _ requestHandler: @escaping (FakeRequestPart<CancelRideRequest>) -> () = { _ in }
+  ) {
+    let stream = self.makecancelRideResponseStream(requestHandler)
+    // This is the only operation on the stream; try! is fine.
+    try! stream.sendMessage(response)
+  }
+
+  /// Returns true if there are response streams enqueued for 'cancelRide'
+  public var hascancelRideResponsesRemaining: Bool {
+    return self.fakeChannel.hasFakeResponseEnqueued(forPath: RideServiceClientMetadata.Methods.cancelRide.path)
   }
 }
 
