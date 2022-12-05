@@ -20,10 +20,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import GRPC
-import NIO
-import NIOConcurrencyHelpers
-import SwiftProtobuf
+@_exported import GRPC
+@_exported import NIO
+@_exported import NIOConcurrencyHelpers
+@_exported import SwiftProtobuf
 
 
 /// Usage: instantiate `RideServiceClient`, then call methods of this protocol to make API calls.
