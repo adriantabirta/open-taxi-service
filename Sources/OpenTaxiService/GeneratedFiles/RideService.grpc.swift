@@ -24,8 +24,6 @@ import GRPC
 import NIO
 import NIOConcurrencyHelpers
 import SwiftProtobuf
-import SwiftProtobuf
-
 
 /// Usage: instantiate `RideServiceClient`, then call methods of this protocol to make API calls.
 public protocol RideServiceClientProtocol: GRPCClient {
