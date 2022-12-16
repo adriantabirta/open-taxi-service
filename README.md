@@ -1,4 +1,4 @@
-# taxify-networking
+# Open taxi networking
 
 Grpc generated file to communicate with backend.
 
